@@ -10,8 +10,7 @@ const methodOverride = require('method-override');
 //#region Environmental Variables
 const PORT = process.env.PORT || 4000;
 const DATABASE_URL = process.env.DATABASE_URL;
-const API_URL = '';
-const API_KEY = '';
+
 const client = new pg.Client(DATABASE_URL);
 client.on('error', error => console.log(error));
 
@@ -23,11 +22,13 @@ app.set('view engine', 'ejs');
 
 //#region Routes
 app.get('/',loadHomePage);
+
 //#endregion
 
 //#region Route Functions
 function loadHomePage(req,res){
-    res.send('Welcome Home!');
+    const API_URL = `https://www.googleapis.com/books/v1/volumes?q=in${req.body.selectionType}:${req.body.query}`;
+    res.render('index.ejs');
 }
 //#endregion
 
